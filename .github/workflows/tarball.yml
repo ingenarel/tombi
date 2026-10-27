@@ -1,0 +1,16 @@
+jobs:
+  sync-mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update mirror
+        uses: projg2/crate-dist-mirror-action@v2
+        with:
+          directories: crates/* editors/zed extensions/* json-schema-test rust/* toml-test xtask
+          ssh-private-key: ${{ secrets.ssh_key }}
+          upstream-repo: https://github.com/tombi-toml/tombi.git
+name: Sync with upstream
+on:
+  push:
+  schedule:
+    - cron: 12 * * * *
+  workflow_dispatch:
