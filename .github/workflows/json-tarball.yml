@@ -11,9 +11,11 @@ jobs:
       - env:
           TOMBI_CACHE_HOME: ./cache
         name: runs cargo test
-        run: cargo test
+        run: |
+          mkdir --parents "$( realpath "${TOMBI_CACHE_HOME}" )"
+          cargo test
       - name: list files
-        run: find ./cache
+        run: find "$( realpath "${TOMBI_CACHE_HOME}" )"
 name: json_tarball
 on:
   release:
