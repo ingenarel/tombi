@@ -3,6 +3,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
       - name: checks out latest tag
         run: git checkout "$(git describe --tags "$(git rev-list --tags --max-count=1)")"
       - env:
