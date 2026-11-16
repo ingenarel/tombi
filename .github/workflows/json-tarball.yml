@@ -8,13 +8,20 @@ jobs:
           fetch-tags: true
       - name: checks out latest tag
         run: git checkout "$(git describe --tags "$(git rev-list --tags --max-count=1)")"
-      - env:
-          TOMBI_CACHE_HOME: ./cache
-        name: runs cargo test
+      - name: runs cargo test
         run: |
-          mkdir --parents "$( realpath "${TOMBI_CACHE_HOME}" )"
+          mkdir --parents ./cache
+          export TOMBI_CACHE_HOME="$( realpath ./cache )"
           cargo test
-          find "$( realpath "${TOMBI_CACHE_HOME}" )"
+      - name: creates the tarball
+        run: |
+          export XZ_OPTS="-9e -T0"
+          find cache -type f -name '*.json' | xargs tar cf json-tarball.tar.xz
+      - env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        name: uploads the tarball
+        run: |
+          gh release upload "$(git describe --tags "$(git rev-list --tags --max-count=1)")" json-tarball.tar.xz
 name: json_tarball
 on:
   release:
