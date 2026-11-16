@@ -14,8 +14,7 @@ jobs:
         run: |
           mkdir --parents "$( realpath "${TOMBI_CACHE_HOME}" )"
           cargo test
-      - name: list files
-        run: find "$( realpath "${TOMBI_CACHE_HOME}" )"
+          find "$( realpath "${TOMBI_CACHE_HOME}" )"
 name: json_tarball
 on:
   release:
