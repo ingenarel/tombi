@@ -1,0 +1,19 @@
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: checks out latest tag
+        run: git checkout "$(git describe --tags "$(git rev-list --tags --max-count=1)")"
+      - env:
+          TOMBI_CACHE_HOME: ./cache
+        name: runs cargo test
+        run: cargo test
+      - name: list files
+        run: find ./cache
+name: json_tarball
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
