@@ -12,7 +12,7 @@ jobs:
         run: |
           mkdir --parents ./cache
           export TOMBI_CACHE_HOME="$( realpath ./cache )"
-          cargo test
+          cargo test --no-fail-fast
       - name: creates the tarball
         run: |
           export XZ_OPTS="-9e -T0"
